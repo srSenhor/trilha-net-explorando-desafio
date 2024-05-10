@@ -1,4 +1,6 @@
 using System.Data;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace DesafioProjetoHospedagem.Models
 {
@@ -19,7 +21,7 @@ namespace DesafioProjetoHospedagem.Models
         {
             if (Suite.Capacidade >= hospedes.Count)
             {
-                Hospedes = hospedes;
+                Hospedes = hospedes;                
             }
             else
             {

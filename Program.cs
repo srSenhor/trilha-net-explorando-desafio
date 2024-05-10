@@ -1,25 +1,60 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 using DesafioProjetoHospedagem.Models;
+using DesafioProjetoHospedagem.View;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-// Cria os modelos de hóspedes e cadastra na lista de hóspedes
-List<Pessoa> hospedes = new List<Pessoa>();
+// Declaração de variáveis para a reserva
+List<Pessoa> hospedes = null;
+Suite suite = null;
+Reserva reserva = null;
 
-Pessoa p1 = new Pessoa(nome: "Hóspede 1");
-Pessoa p2 = new Pessoa(nome: "Hóspede 2");
+bool rodando = true;
 
-hospedes.Add(p1);
-hospedes.Add(p2);
+do
+{
+    Console.Clear();
+    Console.Write("Bem vindo ao sistema de hotelaria!\n"
+                    + "O que deseja fazer?\n\n"
+                    + "1 - Cadastrar suite\n"
+                    + "2 - Cadastrar hospedes\n"
+                    + "3 - Cadastrar reserva\n"
+                    + "4 - Mostrar informações da reserva\n"
+                    + "5 - Sair\n\n"
+                    + "Opção:");
 
-// Cria a suíte
-Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
+string opcao = Console.ReadLine();
 
-// Cria uma nova reserva, passando a suíte e os hóspedes
-Reserva reserva = new Reserva(diasReservados: 10);
-reserva.CadastrarSuite(suite);
-reserva.CadastrarHospedes(hospedes);
-
-// Exibe a quantidade de hóspedes e o valor da diária
-Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria()}");
+    switch (opcao)
+    {
+        case "1":
+            // Cria a suíte
+            suite = Menu.CadastrarSuite();
+            Menu.DigiteParaContinuar();
+            break;
+        case "2":
+            // Cria os modelos de hóspedes e cadastra na lista de hóspedes
+            hospedes = Menu.CadastrarListaDeHospedes();
+            Menu.DigiteParaContinuar();
+            break;
+        case "3":
+            // Cria uma nova reserva, passando a suíte e os hóspedes
+            reserva = Menu.CadastrarReserva(hospedes, suite);
+            Menu.DigiteParaContinuar();
+            break;
+        case "4":
+            // Exibe a quantidade de hóspedes e o valor da diária
+            Menu.DetalharReserva(reserva);
+            Menu.DigiteParaContinuar();
+            break;
+        case "5":
+            Console.WriteLine("Até logo!");
+            rodando = false;
+            break;        
+        default:
+            Console.WriteLine($"\"{opcao}\" não é uma opção válida");
+            Menu.DigiteParaContinuar();
+            break;
+    }
+} while (rodando);
